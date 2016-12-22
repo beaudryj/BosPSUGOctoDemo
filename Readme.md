@@ -8,8 +8,8 @@
 - Chocolatey
 
 # Introduction 
-    The Purpose for this demonstration is to show people the simplicity of using Octopus for daily deploy tasks. 
-    In this demonstration octopus will be used to deploy a powershell module from the Powershell Gallery, deploying a basic website, and configuring IIS Settings. 
+The Purpose for this demonstration is to show people the simplicity of using Octopus for daily deploy tasks. 
+In this demonstration octopus will be used to deploy a powershell module from the Powershell Gallery, deploying a basic website, and configuring IIS Settings. 
 
 # Demo 
 
