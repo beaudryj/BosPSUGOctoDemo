@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>blue_skies</id>
+    <version>1.0.0</version>
+    <authors>BOSPsug</authors>
+    <owners>BosPsug</owners>
+    <projectUrl>https://github.com/beaudryj</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>TestSite</description>
+    <releaseNotes> </releaseNotes>
+    <copyright>Copyright 2016</copyright>
+    <tags></tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>
