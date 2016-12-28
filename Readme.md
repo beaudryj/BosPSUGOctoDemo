@@ -199,3 +199,61 @@ And then Deploy to Demo, where you can then click on Deploy release again. You w
 ![](http://i.imgur.com/XAndh5P.gif)
 
 Check on your [Site](http://localhost:8081/) and you should now be on the Blue Skies test site 
+
+---
+## Bonus Section 
+
+Deploying Powershell Modules from Powershell Gallery
+
+So we have our site deployed, but now we want some pester tests, how would we handle getting pester on this node if it isnt already installed? 
+
+On the top left click on Library and navigate to external feeds. 
+
+In the top right we will then `Add Feed` 
+
+We will name it, and then paste in `https://www.powershellgallery.com/api/v2/` to our URL field, there should be no username or password
+
+You will then click Save and test and we can use `Pester` for the test package name. 
+
+![](http://i.imgur.com/ACEaL7V.gif)
+
+Now that we can access the powershell Gallery let's create a new project for deploying pester 
+
+We will click on Projects > All Projects > Add a project. 
+
+The process will be similar. We will Add A step to deploy a package except this time instead of Selecting IIS Web Site and Application Pool we will configure the process for `Custom Installation Directory`
+
+First we Will need to change our Package Feed to Powershell Gallery, and then we can use our package ID of Pester.  
+
+We will still use the `Web-Server` target for our Job. 
+
+     In this Example we are going to want to install to the whole system. 
+
+#### MAKE SURE TO NOT USE PURGE THIS DIRECTORY BEFORE INSTALLTION THIS WILL DELETE ALL OF YOUR SYSTEM MODULES! (IF using in your own environment)
+
+For our install to location we will use `C:\Windows\System32\WindowsPowerShell\v1.0\Modules`
+
+![](http://i.imgur.com/9QGNECK.gif)
+
+
+Before we run the release we are going to take a look at `Channels` and lock our pester to a prior version. 
+
+Example Say we have a public package and want to make sure we arent accidentally deploying the latest. So We will want to set a maximum version. 
+To do this click on channels on the left, we dont have any other channels at this time, so we will click on the default which is being used. We will then click on Add Version Rule, apply it to our Deploy Pester Step. 
+We will then set a maximum version by following these [Rules](https://docs.nuget.org/ndocs/create-packages/dependency-versions) for our use case `(,3.4.0]`
+
+![](http://i.imgur.com/LwC543t.gif)
+
+From here let's create our release and Deploy it out! When you go to create your release notice it's set to "Latest" using `3.4.0` not `3.4.3` (At time of writing this) This is a great way to make sure new not vetted versions are deployed. 
+
+![](http://i.imgur.com/MWxcP0m.png)
+
+
+### Retention 
+
+Lastly we want to make sure we arent excessively deploying things and over loading the Hard drive, so under library and lifecycles let's click on our default lifecycle and setup some retention policies. This will make sure we don't hold onto too many release or packages are held on the server. 
+
+Select your lifecycle
+Click on change on the default retention policy and set as you see fit. 
+
+![](http://i.imgur.com/0sLwKu8.gif)
