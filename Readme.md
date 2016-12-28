@@ -144,3 +144,58 @@ Once this Script has been run we will finsih applying our settings
 
 
 ### Creating our First Project
+
+Creating our first project is quite easy. Navigate to projects at the top and click to all proects. You will then see an Add project button in the top right where you can click to generate a new project.
+
+![](http://imgur.com/fQWuvn9.gif)
+
+Before we get deep into creating our project we need to publish our Nuget Package we generated at the beginning. 
+
+We will need the API Key we Generated previously. 
+
+On YOUR machine navigate to your Blue Skies Directory if you arent already there and run. 
+
+```
+Nuget push blue_skies.1.0.0.nupkg -ApiKey "yourApiKey" -Source http://localhost:8080/nuget/packages
+```
+
+Now Let's validate it uploaded. 
+
+On the Top Right of your dashboard on Octopus Click on Library, and you should see "Blue_Skies" under available packages. 
+
+![](http://i.imgur.com/4vY6rOz.gif)
+
+
+Now That we have a package to deploy let's add a step to our Demo Project! 
+
+On your dashboard click on the Demo Deploy we created, then click on process on the left hand side and then on the middle of the screen click on add step. We will then click on Deploy a package. 
+We will then name the step. Define the Target to run on `Web-Server`
+
+Once that is set we will search for our package.  Type the package name in the packageID field. For this demo we will not have any Configuration Variables or XML Transforms so we can uncheck those. 
+
+However we do want to create an IIS WebSite and AppPool. So at the bottom we will click on configure features and then click on `IIS Web Site and Application Pool`
+
+Once you select that the page will reload with IIS Configuration Settings. 
+
+Since we did not delete the default site we are just going to re-configure that. So fill in the Website name with `Default Web Site`
+
+Same for the Application Pool so name the Application Pool `DefaultAppPool` 
+
+Make sure to enable Anonymous `Authentication` and disable `Windows Authentication`
+
+Then scroll to the bottom and save. 
+
+![](http://i.imgur.com/wGU7bGf.gif)
+
+
+### Let's Run it! 
+
+Once the project has been created click on Create Release. 
+
+Click on Save. 
+
+And then Deploy to Demo, where you can then click on Deploy release again. You will then be brough to a deploy page where you can see the packages get Deployed. 
+
+![](http://i.imgur.com/XAndh5P.gif)
+
+Check on your [Site](http://localhost:8081/) and you should now be on the Blue Skies test site 
