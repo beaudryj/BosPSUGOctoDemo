@@ -63,8 +63,7 @@ Once logged in there will be a command prompt, just type powershell to kick off 
 
 ```
 import-module servermanager
-add-windowsfeature Web-Server, Web-WebServer, Web-Security, 
-Web-Filtering
+add-windowsfeature Web-Server, Web-WebServer, Web-Security,Web-Filtering
 ````
 
 We Should be able to hit the [Test Site](http://localhost:8081) on IIS 
@@ -72,9 +71,13 @@ We Should be able to hit the [Test Site](http://localhost:8081) on IIS
 We are also going to install the octopus tentacle now. 
 Go back on to your webserver and go to your powershell session and run the command below. 
 
+### * if it fails just run again
 ```
-choco install octopusdeploy.tentacle
+choco install octopusdeploy.tentacle -confirm
 ```
+
+
+
 
 
 ---
@@ -117,21 +120,27 @@ On our newly created environment we will click on Add a deployment target.
 - Leave Port and Proxy default
 
 Once you click add this might hang... Don't worry its due to the fact that we have not run the listener configuration on the tentacle just yet. 
-![](http://i.imgur.com/hcPyho2.gif)
+![](http://i.imgur.com/uWSWCw6.gif)
 
-### Configure Tentacle
- 
- With the API Key we generated and the Server thumbprint update the script below with those values. 
- Then on the Web Server VM open up a powershell instance and copy and paste the script below, Once completed go back to octopus and re-apply the Listener settings which should then add your new server to the environment for us to interact with. 
- 
+ Then on the Web Server VM open up a powershell instance and copy and paste the script below, Once completed go back to octopus and finish applyinh the Listener settings which should then add your new server to the environment for us to interact with. 
+
+#### Make sure to Apply your thumbprint below! 
+#### May have to re-enter powershell after installing tentacle and webserver
+
 ```
 cd "C:\Program Files\Octopus Deploy\Tentacle"
-Tentacle.exe create-instance --instance "Tentacle" --config "C:\Octopus\Tentacle.config" --console
-Tentacle.exe new-certificate --instance "Tentacle" --if-blank --console
-Tentacle.exe configure --instance "Tentacle" --reset-trust --console
-Tentacle.exe configure --instance "Tentacle" --home "C:\Octopus" --app "C:\Octopus\Applications" --port "10933" --console
-Tentacle.exe configure --instance "Tentacle" --trust "YOUR_OCTOPUS_THUMBPRINT" --console
-"netsh" advfirewall firewall add rule "name=Octopus Deploy Tentacle" dir=in action=allow protocol=TCP localport=10933
-Tentacle.exe register-with --instance "Tentacle" --server "http://localhost:8080" --apiKey="API-YOUR_API_KEY" --role "web-server" --environment "Demo" --comms-style TentaclePassive --console
-Tentacle.exe service --instance "Tentacle" --install --start --console
+Start-Process "Tentacle.exe" -ArgumentList "create-instance --instance `"Tentacle`" --config `"C:\Octopus\Tentacle.config`" --console" -wait -nonewwindow
+Start-Process "Tentacle.exe" -ArgumentList "new-certificate --instance `"Tentacle`" --if-blank --console" -wait -nonewwindow
+Start-Process "Tentacle.exe" -ArgumentList "configure --instance `"Tentacle`" --reset-trust --console" -wait -nonewwindow
+Start-Process "Tentacle.exe" -ArgumentList "configure --instance `"Tentacle`" --home `"C:\Octopus`" --app `"C:\Octopus\Applications`" --port `"10933`" --console" -wait -nonewwindow
+Start-Process "Tentacle.exe" -ArgumentList "configure --instance `"Tentacle`" --trust `"YourThumbPrintHere`" --console" -wait -nonewwindow
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+Start-Process "Tentacle.exe" -ArgumentList "service --instance `"Tentacle`" --install --start --console" -wait -nonewwindow
 ```
+
+Once this Script has been run we will finsih applying our settings
+
+![](http://i.imgur.com/GA0IrZt.gif)
+
+
+### Creating our First Project
