@@ -58,7 +58,7 @@ At this point Octopus is most likely still installing SQL, but our web server sh
 
 Open up your virtual box instance for "Web" and log in to the vm 
     
-    U: Vagrant - p: vagrant
+    U: administrator - p: vagrant
 
 Once logged in there will be a command prompt, just type powershell to kick off a powershell session and run the code below.
 
